@@ -16,7 +16,7 @@
             <li>
                 <a href="/" class="font-semibold transition-colors hover:text-black" aria-current="page">Home</a>
             </li>
-            <li class="[&>svg]:size-3.5">-</li>
+            <li class="[&>svg]:size-3.5">-</li> 
             <li>
                 <a href="/about" class="font-semibold transition-colors hover:text-black">About</a>
             </li>

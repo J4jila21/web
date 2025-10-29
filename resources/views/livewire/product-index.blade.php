@@ -32,54 +32,53 @@
                         <textarea wire:model="description" placeholder="Deskripsi" class="w-full rounded border p-2"></textarea>
 
                         <div class="space-y-2">
-    <label class="text-sm font-semibold text-gray-700">Upload Gambar</label>
+                            <label class="text-sm font-semibold text-gray-700">Upload Gambar</label>
 
-    <!-- Input File Custom -->
-    <label
-        for="imageUpload"
-        class="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition"
-    >
-        <div class="flex flex-col items-center justify-center pt-5 pb-6">
-            <svg class="w-8 h-8 mb-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
-            <p class="text-sm text-gray-500">Klik untuk pilih gambar</p>
-            <p class="text-xs text-gray-400">JPEG, JPG, PNG, WEBP | Max 2MB</p>
-        </div>
-        <input id="imageUpload" type="file" class="hidden" wire:model="image" accept="image/*">
-    </label>
+                            <!-- Input File Custom -->
+                            <label for="imageUpload"
+                                class="flex h-40 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed bg-gray-50 transition hover:bg-gray-100">
+                                <div class="flex flex-col items-center justify-center pb-6 pt-5">
+                                    <svg class="mb-1 h-8 w-8 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <p class="text-sm text-gray-500">Klik untuk pilih gambar</p>
+                                        <p class="text-xs text-gray-400">JPEG, JPG, PNG, WEBP | Max 2MB</p>
+                                </div>
+                                <input id="imageUpload" type="file" class="hidden" wire:model="image"
+                                    accept="image/*">
+                            </label>
 
-    <!-- Validasi -->
-    @error('image')
-        <span class="text-red-600 text-sm">{{ $message }}</span>
-    @enderror
+                            <!-- Validasi -->
+                            @error('image')
+                                <span class="text-sm text-red-600">{{ $message }}</span>
+                            @enderror
 
-    @if ($previewImage)
-<div class="relative w-40 mt-2" wire:loading.remove wire:target="image">
-    <img src="{{ $previewImage }}" class="w-full h-40 object-cover rounded-lg shadow-md border">
+                            @if ($previewImage)
+                                <div class="relative mt-2 w-40" wire:loading.remove wire:target="image">
+                                    <img src="{{ $previewImage }}"
+                                        class="h-40 w-full rounded-lg border object-cover shadow-md">
 
-    <button type="button" wire:click="removeImage"
-        class="absolute top-1 right-1 bg-red-500 text-white text-xs rounded-full p-1 shadow hover:bg-red-700">
-        ✕
-    </button>
-</div>
-@endif
+                                    <button type="button" wire:click="removeImage"
+                                        class="absolute right-1 top-1 rounded-full bg-red-500 p-1 text-xs text-white shadow hover:bg-red-700">
+                                        ✕
+                                    </button>
+                                </div>
+                            @endif
 
-    <!-- Loading saat upload -->
-    <div wire:loading wire:target="image" class="text-sm text-gray-600">
-        Mengupload gambar...
-    </div>
-</div>
+                            <!-- Loading saat upload -->
+                            <div wire:loading wire:target="image" class="text-sm text-gray-600">
+                                Mengupload gambar...
+                            </div>
+                        </div>
 
 
                         <div class="mt-3 flex justify-end gap-2">
                             <button type="button" @click="open=false" wire:click="closeModal()"
                                 class="rounded border px-4 py-2">Batal</button>
-                            <button type="submit"
-    class="rounded bg-blue-600 px-4 py-2 text-white"
-    wire:loading.attr="disabled">
-    <span wire:loading.remove>Simpan</span>
-    <span wire:loading>Loading...</span>
-</button>
+                            <button type="submit" class="rounded bg-blue-600 px-4 py-2 text-white"
+                                wire:loading.attr="disabled">
+                                <span wire:loading.remove>Simpan</span>
+                                <span wire:loading>Loading...</span>
+                            </button>
 
 
                         </div>
@@ -132,6 +131,19 @@
                     </div>
                 </div>
             </div>
+
+            {{-- Live Search Input --}}
+            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari Produk..."
+                class="focus:border-primary-500 w-full rounded border-gray-300 p-2 sm:w-1/2">
+
+            {{-- Sorting Dropdown --}}
+            <select wire:model.live.debounce.300ms="shortBy"
+                class="focus:border-primary-500 w-full rounded border-gray-300 p-2 sm:w-44">
+                <option value="latest">Terbaru</option>
+                <option value="oldest">Terlama</option>
+                <option value="expensive">Termahal</option>
+                <option value="quantity">Terbanyak (Qty)</option>
+            </select>
             {{-- Daftar Produk --}}
             <table class="mt-4 w-full overflow-hidden rounded-lg border border-gray-300 shadow-sm">
                 <thead>
@@ -145,10 +157,10 @@
                 </thead>
                 <tbody>
                     @foreach ($products as $product)
-                        <tr class="border-b hover:bg-gray-100">
+                        <tr wire:key="row-{{ $product->id }}" class="border-b hover:bg-gray-100">
                             <td class="p-2 text-center">
-                                <img src="{{ asset('storage/images/' . $product->image) }}" alt="{{ $product->name }}"
-                                    class="mx-auto h-12 w-12 rounded-lg">
+                                <img src="{{ asset('storage/images/' . $product->image) }}"
+                                    alt="{{ $product->name }}" class="mx-auto h-12 w-12 rounded-lg">
                             </td>
                             <td class="p-2 text-center">{{ $product->name }}</td>
                             <td class="p-2 text-center">Rp {{ number_format($product->price) }}</td>
@@ -202,15 +214,15 @@
 
                                     </div>
                                 </div>
-        </td>
-        </tr>
-        @endforeach
-        </tbody>
-        </table>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
 
-        <div class="mt-2">
-            {{ $products->links() }}
+            <div class="mt-2">
+                {{ $products->links() }}
+            </div>
         </div>
-    </div>
     </div>
 </main>

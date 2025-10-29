@@ -1,10 +1,11 @@
  <?php
 use App\Models\post;
 use App\Models\Product;
-use App\Livewire\Admin\Login;
 use App\Livewire\ProductIndex;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Livewire\Auth\Register;
+
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
@@ -58,6 +59,7 @@ Route::get('/product', [ProductController::class, 'index'])->name('product.index
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
 
+
 Route::get('/dashboard/login', [LoginController::class, 'showLoginForm'])->name('login.form');
 Route::post('/dashboard/login', [LoginController::class, 'login'])->name('login.submit');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -87,5 +89,6 @@ Route::post('/logout', function () {
 
     return redirect('/dashboard/login');
 })->name('logout');
+
 
 

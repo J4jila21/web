@@ -30,7 +30,7 @@
 
                 <!-- Email Field -->
                 <div class="col-span-12">
-                    <div class="relative w-full shadow-sm rounded-md">
+                    <div class="relative w-full shadow-sm rounded-md">   
                         <input type="email" name="email"
                             class="w-full rounded-lg border px-3 py-2 pr-10 text-sm outline-none focus:ring-primary-500 focus:border-primary-500 border-gray-300"
                             placeholder="Masukkan alamat email" required>

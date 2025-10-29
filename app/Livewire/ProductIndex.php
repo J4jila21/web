@@ -4,18 +4,28 @@ namespace App\Livewire;
 
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
+use Livewire\Attributes\Layout;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
 
+#[Layout('components.layouts.admin')]
 class ProductIndex extends Component
 {
     use WithFileUploads, WithPagination;
+
     protected $paginationTheme = 'tailwind';
+
     public $product;
     public $name, $price, $description, $quantity, $image, $imageName, $productId;
     public $previewImage;
+    #[Url]
+    public $search = '';
+    #[Url]
+    public $shortBy = 'latest';
     public $isEdit = false;
     public $showModal = false;
     public $showDeleteModal = false;
@@ -23,42 +33,67 @@ class ProductIndex extends Component
     public $showViewModal = false;
     public $loading = false;
     public $selectedProduct;
-    
+
     public function openModalView($id)
-{
-    $this->selectedProduct = Product::find($id);
-    $this->showViewModal = true;
-}
+    {
+        $this->selectedProduct = Product::find($id);
+        $this->showViewModal = true;
+    }
 
-public function openModalEdit($id)
-{
-    $this->isEdit = true;
-    $product = Product::find($id);
-    
-    $this->productId = $id;
-    $this->name = $product->name;
-    $this->price = $product->price;
-    $this->quantity = $product->quantity;
-    $this->description = $product->description;
-    $this->previewImage = asset('storage/images/'.$product->image);
+    public function openModalEdit($id)
+    {
+        $this->isEdit = true;
+        $product = Product::find($id);
 
-    $this->showModal = true;
-}
+        $this->productId = $id;
+        $this->name = $product->name;
+        $this->price = $product->price;
+        $this->quantity = $product->quantity;
+        $this->description = $product->description;
+        $this->previewImage = asset('storage/images/' . $product->image);
 
-public function openDeleteModal($id)
-{
-    $this->productId = $id;
-    $this->showDeleteModal = true;
-}
+        $this->showModal = true;
+    }
 
-public function render()
-{
-    $products = Product::orderBy('id', 'DESC')->paginate(10);
+    public function openDeleteModal($id)
+    {
+        $this->productId = $id;
+        $this->showDeleteModal = true;
+    }
 
-    return view('livewire.product-index', compact('products'))
-        ->layout('components.layouts.admin');
-}
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
 
+    public function updatingShortBy()
+    {
+        $this->resetPage();
+    }
+
+    public function render()
+    {
+        $query = Product::where('name', 'like', '%' . $this->search . '%');
+
+        switch ($this->shortBy) {
+            case 'oldest':
+                $query->orderBy('created_at', 'ASC');
+                break;
+            case 'expensive':
+                $query->orderBy('price', 'DESC');
+                break;
+            case 'quantity':
+                $query->orderBy('quantity', 'DESC');
+                break;
+            default:
+                $query->orderBy('created_at', 'DESC'); // latest
+                break;
+        }
+
+        return view('livewire.product-index', [
+            'products' => $query->paginate(8),
+        ]);
+    }
 
     public function updatedImage()
     {
@@ -69,12 +104,13 @@ public function render()
 
     public function removeImage()
     {
-        $this ->image = null;
+        $this->image = null;
         $this->previewImage = null;
     }
-    
+
     // Toggle dropdown options
-    public function toggleOptions() {
+    public function toggleOptions()
+    {
         $this->showOptions = !$this->showOptions;
     }
 
@@ -150,20 +186,19 @@ public function render()
         $product = Product::findOrFail($this->productId);
 
         // ✅ Jika gambar tidak diubah → pakai gambar lama
-    if (!$this->image) {
-        $this->imageName = $product->image;
-    }
-
-    // ✅ Jika gambar diubah → simpan baru
-    if ($this->image) {
-        if ($product->image && $product->image != 'default.png') {
-            Storage::disk('public')->delete('images/' . $product->image);
+        if (!$this->image) {
+            $this->imageName = $product->image;
         }
 
-        $this->imageName = Str::uuid() . '.' . $this->image->getClientOriginalExtension();
-        $this->image->storeAs('images', $this->imageName, 'public');
-    }
-    
+        // ✅ Jika gambar diubah → simpan baru
+        if ($this->image) {
+            if ($product->image && $product->image != 'default.png') {
+                Storage::disk('public')->delete('images/' . $product->image);
+            }
+
+            $this->imageName = Str::uuid() . '.' . $this->image->getClientOriginalExtension();
+            $this->image->storeAs('images', $this->imageName, 'public');
+        }
 
         $product->update([
             'name' => $this->name,
@@ -177,7 +212,6 @@ public function render()
         session()->flash('message', 'Produk berhasil diperbarui.');
     }
 
-    
     public function confirmDelete($id)
     {
         $this->productId = $id;
