@@ -142,7 +142,7 @@
                 <option value="latest">Terbaru</option>
                 <option value="oldest">Terlama</option>
                 <option value="expensive">Termahal</option>
-                <option value="quantity">Terbanyak (Qty)</option>
+                <option value="quantity">Terbanyak</option>
             </select>
             {{-- Daftar Produk --}}
             <table class="mt-4 w-full overflow-hidden rounded-lg border border-gray-300 shadow-sm">

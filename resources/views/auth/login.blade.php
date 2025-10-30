@@ -26,8 +26,7 @@
                     <div class="rounded bg-red-100 p-2 text-sm text-red-700">
                         {{ $errors->first() }}
                     </div>
-                @endif
-
+                @endif 
                 <!-- Email Field -->
                 <div class="col-span-12">
                     <div class="relative w-full shadow-sm rounded-md">   

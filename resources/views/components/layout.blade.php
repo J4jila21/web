@@ -11,7 +11,7 @@
     <title>{{ $title ?? 'Coffe Shop' }}</title>
 </head>
 <body class="h-full">
-    <div class="min-h-full">
+    <div class="min-h-full pb-20">
         {{-- Navbar hanya muncul jika hideNavbar tidak true --}}
         @unless($hideNavbar ?? false)
             @include('components.navbar')

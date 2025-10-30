@@ -1,28 +1,27 @@
 <?php
 
-namespace App\Http\Livewire\Auth;
+namespace App\Livewire\Auth;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
 class UserLogin extends Component
 {
-    public $email;
-    public $password;
+    public $email, $password;
 
     public function login()
     {
-        $this->validate([
+        $credentials = $this->validate([
             'email' => 'required|email',
-            'password' => 'required|string',
+            'password' => 'required',
         ]);
 
-        if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
+        if (Auth::attempt($credentials)) {
             session()->regenerate();
             return redirect()->intended('/');
         }
 
-        $this->addError('email', 'Email atau password salah');
+        $this->addError('email', 'Email atau password salah.');
     }
 
     public function render()

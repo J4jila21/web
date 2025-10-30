@@ -4,8 +4,8 @@ use App\Models\Product;
 use App\Livewire\ProductIndex;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Livewire\Auth\Register;
-
+use App\Livewire\Auth\UserLogin;
+use App\Livewire\Auth\Register;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
@@ -90,5 +90,6 @@ Route::post('/logout', function () {
     return redirect('/dashboard/login');
 })->name('logout');
 
-
+Route::get('/register', Register::class)->name('register');
+Route::get('/login', UserLogin::class)->name('login');
 

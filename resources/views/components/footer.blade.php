@@ -54,5 +54,5 @@
     </div>
 </div>
 <div class=" w-full justify-center bg-primary-500">
-<p class="py-3 text-center text-sm text-white">&copy; {{ date('Y') }} Kopi Terbaik Nusantara. All rights reserved</p>
+<p class="py-3 text-center p-5 text-sm text-white md:text-xs">&copy; {{ date('Y') }} Kopi Terbaik Nusantara.id All rights reserved</p>
 </div>
