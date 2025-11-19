@@ -43,52 +43,140 @@
         </form>
     </div>
     {{-- Produk Grid --}}
-    <div class="mx-auto max-w-7xl px-6">
-        <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            @forelse ($products as $product)
-                <div
-                    class="flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all duration-300">
-                    {{-- Gambar Produk --}}
-                    <div class="relative">
-                        <img src="{{ $product->image ? asset('storage/images/' . $product->image) : asset('storage/images/default.png') }}"
-                            alt="product image"
-                            class="h-52 w-full object-cover transition-transform duration-300 group-hover:scale-105">
-                        <div class="absolute left-3 top-3 rounded-full bg-blue-600 px-3 py-1 text-xs text-white shadow">
-                            Stok: {{ $product->quantity }}
-                        </div>
-                    </div>
-                    {{-- Detail Produk --}}
-                    <div class="flex flex-grow flex-col justify-between p-5">
-                        <div>
-                            <h3 class="mb-2 text-lg font-semibold text-gray-800 group-hover:text-blue-600">
-                                {{ $product->name }}
-                            </h3>
-                            <p class="mb-4 text-sm leading-relaxed text-gray-500">
-                                {{ Str::limit($product->description, 70, '...') }}
-                            </p>
-                        </div>
-                        {{-- Harga & Tombol --}}
-                        <div class="mt-auto">
-                            <div class="mb-3 flex items-center justify-between">
-                                <span class="text-lg font-bold text-gray-900">
-                                    Rp {{ number_format($product->price, 0, ',', '.') }}
-                                </span>
-                            </div>
-                            <button
-                                class="bg-primary-600 w-full rounded-full py-2 font-semibold text-white transition hover:bg-blue-700">
-                                Tambah ke Keranjang
-                            </button>
-                        </div>
-                    </div>
+    <div x-data="productModal()">
+        <div class="mx-auto max-w-7xl px-6" x-data="filterProducts()">
+            <div class="flex items-center justify-end gap-5 md:mb-5">
+                <h3 class="text-gray-500">Urutkan:</h3>
+        <select x-model="sort"
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm shadow">
+            <option value="">Urutkan</option>
+            <option value="cheap">Termurah</option>
+            <option value="expensive">Termahal</option>
+        </select>
+    </div>
+            <div class="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
+                <template x-for="product in sortedProducts" :key="product.id">
+        <div class="flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white">
+
+            <!-- Gambar -->
+            <div class="relative">
+                <div class="aspect-square w-full md:aspect-[4/3]">
+                    <img :src="product.image ? '/storage/images/' + product.image : '/storage/images/default.png'"
+                         class="h-full w-full object-cover rounded-t-lg">
                 </div>
-            @empty
-                <div class="col-span-full py-20 text-center">
-                    <dotlottie-wc src="https://lottie.host/70b04043-3df6-470e-9770-02da5ab76921/PQfCwEPrix.lottie"
-                        style="width: 300px;height: 300px; margin:auto" autoplay loop></dotlottie-wc>
-                    <h3 class="text-xl font-semibold text-gray-600">Belum ada produk yang tersedia</h3>
+
+                <div class="absolute left-3 top-3 rounded-full bg-blue-600 px-3 py-1 text-xs text-white shadow">
+                    Stok: <span x-text="product.quantity"></span>
                 </div>
-            @endforelse
+            </div>
+
+            <!-- Detail -->
+            <div class="p-5 flex flex-col justify-between flex-grow">
+                <h3 class="text-lg font-semibold" x-text="product.name"></h3>
+
+                <p class="text-sm text-gray-500">
+                    <span x-text="product.description.substring(0, 70) + '...'"></span>
+                </p>
+
+                <div class="mt-2 flex flex-col items-stretch justify-between gap-1.5 rounded-md py-1 pl-1 pr-1 md:flex-row md:items-center md:gap-2 md:rounded-lg md:bg-neutral-100 md:py-1.5 md:pl-4 md:pr-1.5">
+                    <span class="font-bold" x-text="'Rp ' + new Intl.NumberFormat().format(product.price)"></span>
+
+                    <button
+                        @click="openModal(product)"
+                        class="bg-primary-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-primary-700">
+                        Detail
+                    </button>
+                </div>
+            </div>
+
         </div>
+    </template>
+
+            </div>
+        </div>
+        <div x-show="open" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+            x-transition.opacity>
+
+            <div class="relative w-full max-w-2xl rounded-xl bg-white p-4 shadow-lg" x-transition>
+
+                <!-- Close button -->
+                <button type="button" @click="open=false"
+                    class="absolute right-3 top-3 text-gray-400 hover:text-gray-600">
+                    <svg width="20" height="20" viewBox="0 0 15 15" fill="none">
+                        <path
+                            d="M11.78 4.03a.5.5 0 0 0-.71-.71L7.5 6.89 3.93 3.32a.5.5 0 0 0-.71.71L6.79 7.6l-3.57 3.57a.5.5 0 1 0 .71.71L7.5 8.31l3.57 3.57a.5.5 0 0 0 .71-.71L8.21 7.6l3.57-3.57Z"
+                            fill="currentColor" />
+                    </svg>
+                </button>
+
+                <h3 class="mb-4 border-b pb-2 font-bold text-gray-700">
+                    Product Detail
+                </h3>
+
+                <div class="flex flex-col gap-6 md:flex-row">
+
+                    <div class="flex w-full justify-center md:w-1/2">
+                        <div class="aspect-square w-56 md:w-48">
+                            <img :src="data.image" class="h-full w-full rounded-lg object-cover shadow">
+                        </div>
+                    </div>
+
+
+                    <!-- Info -->
+                    <div class="flex w-full flex-col md:w-1/2">
+
+                        <h2 class="mt-2 text-xl font-semibold md:mt-0" x-text="data.name"></h2>
+
+                        <p class="mt-1 text-sm text-gray-600" x-text="data.desc"></p>
+
+                        <!-- Harga -->
+                        <p class="text-primary-600 mt-2 text-lg font-bold">
+                            <span x-text="formatPrice(data.price)"></span>
+                        </p>
+
+                        <!-- Qty -->
+                        <div class="mt-4 flex items-center gap-4">
+                            <button @click="decreaseQty" class="rounded-lg bg-gray-200 px-3 py-1">-</button>
+
+                            <span class="text-lg" x-text="qty"></span>
+
+                            <button @click="increaseQty" class="rounded-lg bg-gray-200 px-3 py-1">+</button>
+                        </div>
+
+                        <!-- Add to cart -->
+                        <button @click="addToCart" class="bg-primary-600 mt-4 w-full rounded-lg py-2 text-white">
+                            Tambah ke Keranjang
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
     </div>
     <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.5/dist/dotlottie-wc.js" type="module"></script>
+    <script>
+    function filterProducts() {
+    return {
+        sort: '',
+        products: @json($products), // dari controller
+
+        get sortedProducts() {
+            let data = [...this.products];
+
+            if (this.sort === 'cheap') {
+                data.sort((a, b) => a.price - b.price);
+            }
+            if (this.sort === 'expensive') {
+                data.sort((a, b) => b.price - a.price);
+            }
+
+            return data;
+        }
+    }
+}
+    </script>
+
+
 </x-layout>

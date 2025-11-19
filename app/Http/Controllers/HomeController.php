@@ -10,7 +10,7 @@ class HomeController extends Controller
         $products = Product::take(4)->get();
         
         return view('home.index', [
-            'title' => 'Kopi Terbaik Nusantara',
+            'title' => 'seduhin kopi bareng',
             'products' => $products
         ]);
     }

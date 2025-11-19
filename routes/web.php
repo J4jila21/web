@@ -6,12 +6,23 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Livewire\Auth\UserLogin;
 use App\Livewire\Auth\Register;
-use App\Http\Controllers\BukuController;
+use App\Livewire\Auth\ForgotPassword;
+use App\Livewire\Auth\ResetPassword;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Auth\AdminLoginController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\CheckoutController;
+use App\Livewire\Users;
+use App\Livewire\UsersEdit;
+use App\Livewire\Create;
+use App\Livewire\Edit;
+use App\Livewire\Blogs;
+use App\Livewire\Admin\Orders;
+use App\Livewire\Admin\Dashboard;
+
 
 Route::get('/buku', function () {
     return view('buku.index', [
@@ -33,7 +44,7 @@ Route::get('/blog', function () {
     }
 
     return view('blog.index', [
-        'title' => 'Blog - Kopi Terbaik dari Nusantara',
+        'title' => 'Blog - seduhin kopi bareng',
         'posts' => $posts->paginate(5),
     ]);
 });
@@ -48,33 +59,67 @@ Route::get('contact', function () {
     ]);
 });
 
-Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
-Route::post('/buku', [BukuController::class, 'store'])->name('buku.store');
-Route::get('/buku/{id}/edit', [BukuController::class, 'edit'])->name('buku.edit');
-Route::put('/buku/{id}', [BukuController::class, 'update'])->name('buku.update');
-Route::delete('/buku/{id}/delete', [BukuController::class, 'destroy'])->name('buku.delete');
-Route::resource('buku', BukuController::class);
+Route::middleware('web')->group(function () {
 Route::resource('product', ProductController::class);
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+Route::post('/order/store', [ProductController::class, 'store'])->name('order.store');
+
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
+Route::get('/login', UserLogin::class)->name('login'); 
+Route::get('/register', Register::class)->name('register');
+Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
+    Route::get('/user/pesanan', [UserController::class, 'pesanan'])->name('user.pesanan');
+    Route::post('/user/pesanan', [UserController::class, 'pesanan'])->name('user.pesanan');
+    Route::get('user/pesanan/detail/{id}', [UserController::class, 'detail'])->name('user.detail.pesanan');
+    Route::get('/user/profile/edit', [UserController::class, 'editProfile'])->name('user.profile.edit');
+    Route::put('/user/profile/update', [UserController::class, 'updateProfile'])->name('user.profile.update');
+Route::post('/checkout/store', [CheckoutController::class, 'store'])
+    ->middleware('auth')
+    ->name('checkout.store');
+
+Route::get('/checkout', function () {
+    return view('checkout', [
+        'title' => 'Checkout',
+    ]);
+})->middleware('auth')->name('checkout');
 
 
-Route::get('/dashboard/login', [LoginController::class, 'showLoginForm'])->name('login.form');
-Route::post('/dashboard/login', [LoginController::class, 'login'])->name('login.submit');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', function () {
+    Auth::guard('web')->logout();
+    request()->session()->invalidate();
+    request()->session()->regenerateToken();
+    return redirect('/login');
+})->name('logout');
+});
+
+
+Route::get('/forgot-password', ForgotPassword::class)->name('forgot-password');
+Route::get('/reset-password/{token}', ResetPassword::class)->name('reset-password');
+
+Route::prefix('dashboard')->group(function () {
+    Route::middleware('admin.guest')->group(function () {
+        Route::get('/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
+        Route::post('/login', [AdminLoginController::class, 'login'])->name('admin.login.submit');
+    });
+
+    Route::post('/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');
 
 
 
-Route::prefix('dashboard')->name('admin.')->middleware('auth')->group(function () {
+Route::middleware('auth:admin')->group(function () {
     
-    // Dashboard
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', Dashboard::class)->name('admin.dashboard');
+    Route::get('/products', ProductIndex::class)->name('admin.products.index');
+    Route::get('/users', Users::class)->name('admin.users');
+    Route::get('/users/{id}/edit', UsersEdit::class)->name('admin.users.edit');
+    Route::get('/blogs', Blogs::class)->name('admin.blogs');
+    Route::get('/create', Create::class)->name('admin.blogs.create');
+    Route::get('/edit/{post}',Edit::class)->name('admin.blogs.edit');
 
-    // Admin Products (Livewire)
-    Route::get('/products', ProductIndex::class)->name('products.index');
+    Route::get('/orders', Orders::class)->name('admin.orders');
 
-    // Admin CRUD Produk (Controller, optional)
+
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
@@ -82,14 +127,4 @@ Route::prefix('dashboard')->name('admin.')->middleware('auth')->group(function (
 });
 
 
-Route::post('/logout', function () {
-    Auth::logout();
-    request()->session()->invalidate();
-    request()->session()->regenerateToken();
-
-    return redirect('/dashboard/login');
-})->name('logout');
-
-Route::get('/register', Register::class)->name('register');
-Route::get('/login', UserLogin::class)->name('login');
-
+});

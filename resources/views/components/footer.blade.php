@@ -1,14 +1,15 @@
-<div class="bg-primary-500 relative flex flex-col gap-5 border-b border-white p-8 md:flex-row md:justify-between md:p-20">
+<div
+    class="bg-primary-500 relative flex flex-col gap-5 border-b border-white p-8 md:flex-row md:justify-between md:p-20">
     <div class="flex flex-col gap-5 md:w-3/12">
         <div class="flex w-8/12 items-center gap-2 md:w-11/12">
-            <img class="w-50 h-auto" src="{{ asset('img/logo white.svg') }}" alt="Logo KopiKu" loading="lazy">
+            <img class="h-10 w-40" src="{{ asset('favicon-bottom.png') }}" alt="Logo KopiKu" loading="lazy">
         </div>
         <p class="text-gray-400 md:text-xs">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
             consequatur. Doloribus,
             quibusdam. Molestias molestiae, accusantium. Doloribus, quibusdam.</p>
     </div>
     <div>
-        <h3 class="text-white font-bold">Company</h3>
+        <h3 class="font-bold text-white">Company</h3>
         <div class="mt-3 flex flex-col gap-3 md:text-xs">
             <a class="text-gray-400 transition-all duration-300 hover:text-white" href="/buku">Buku</a>
             <a class="text-gray-400 transition-all duration-300 hover:text-white" href="/product">Product</a>
@@ -17,7 +18,7 @@
             <a class="text-gray-400 transition-all duration-300 hover:text-white" href="/contact">Contact</a>
         </div>
     </div>
-    <div class="flex gap-5 items-center md:items-end">
+    <div class="flex items-center gap-5 md:items-end">
         <a target="_blank" aria-label="kunjungi faebook" href="https://facebook.com/jajila">
             <div class="flex h-12 w-12 items-center justify-center rounded-full bg-white">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -37,7 +38,6 @@
                     </path>
                     <path d="m10 15 5-3-5-3z"></path>
                 </svg>
-                </svg>
             </div>
         </a>
         <a target="_blank" aria-label="kunjungi faebook" href="https://instagram.com/jajila">
@@ -53,6 +53,7 @@
         </a>
     </div>
 </div>
-<div class=" w-full justify-center bg-primary-500">
-<p class="py-3 text-center p-5 text-sm text-white md:text-xs">&copy; {{ date('Y') }} Kopi Terbaik Nusantara.id All rights reserved</p>
+<div class="bg-white md:bg-primary-500 w-full mt-3 md:mt-0  justify-center">
+    <p class="p-5 py-3 text-center text-gray-400 md:text-white text-md md:text-xs">&copy; {{ date('Y') }} Seduhin.id
+        All rights reserved</p>
 </div>

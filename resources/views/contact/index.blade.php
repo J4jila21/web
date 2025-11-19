@@ -1,7 +1,7 @@
 <x-layout>
     <x-slot:title>Contact</x-slot:title>
 
-    <main class="bg-gray-100 min-h-screen">
+    <main class="bg-white min-h-screen">
         <!-- Breadcrumb -->
         <nav class="p-3 md:px-20" aria-label="Breadcrumb">
             <ol class="flex flex-wrap gap-1 text-sm text-gray-400">

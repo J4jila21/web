@@ -90,8 +90,12 @@ class ProductIndex extends Component
                 break;
         }
 
-        return view('livewire.product-index', [
+        return view('livewire.product-index',
+        [
             'products' => $query->paginate(8),
+            
+        ])->layout('components.layouts.admin', [
+            'title' => 'Products | Seduhin',
         ]);
     }
 

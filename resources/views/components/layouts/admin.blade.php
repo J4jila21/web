@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" type="image/x-icon" href="/img/20.jpg">
-    <title>Coffy Admin</title>
+    <link rel="icon" type="image/png" href="/img/seduhin_logo.ico" sizes="32x32">
+    <title>{{ $title }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="bg-gray-100 flex flex-col min-h-screen">
+<body class="bg-primary-50 flex flex-col min-h-screen">
     {{-- Header --}}
     <header class="bg-white shadow px-4 py-3 flex justify-between items-center md:px-6 fixed top-0 w-full z-30">
     <div class="flex items-center space-x-3">
@@ -22,9 +22,10 @@
             </svg>
         </button>
 
-        <a href="{{ route('admin.dashboard') }}">
-            <img class="w-20 h-8" src="{{ asset('img/logo blue.svg') }}" alt="Coffee Shop">
-        </a>
+                    <a href="{{ route('admin.dashboard') }}">
+                <img class=" transition all duration-300 ease-in-out w-50 h-8" src="{{ asset('favicon.png') }}" alt="seduhin logo" width="100"
+                    loading="lazy" height="24">
+            </a>
     </div>
 
     {{-- Profile Dropdown --}}
@@ -42,7 +43,7 @@
         </button>
 
         <!-- Dropdown -->
-        <div x-show="open" @click.away="open = false"
+        <div x-show="open" @click.away="open = false" x-transition x-cloak
             class="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-lg border py-2 z-50">
 
             <a href="#" onclick="alert('Halaman profil belum dibuat')"
@@ -52,7 +53,7 @@
                  Edit Profil
             </a>
 
-            <form method="POST" action="{{ route('logout') }}">
+            <form method="POST" action="{{ route('admin.logout') }}">
                 @csrf
                 <button type="submit"
                     class="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-100">
@@ -69,23 +70,23 @@
 
     <div class="flex flex-1">
         {{-- Sidebar --}}
-        <aside id="sidebar" class="w-64 bg-white shadow-lg flex flex-col fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-20">
-            <div class="p-3 border-b justify-start">
-                <img class="w-50 h-8" src="{{ asset('img/logo blue.svg') }}" alt="Coffee Shop" width="120"
-                        height="40">
-            </div>
+        <aside id="sidebar" class="w-64 py-4 bg-white shadow-lg flex flex-col fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-20">
+            
 
-            <nav class="flex-1 p-4 space-y-1 text-sm" x-data="{ 
+            <nav class="mt-10 flex-1 p-4 space-y-1 text-sm" x-data="{ 
     openDashboard: false,
     openProducts: false,
-    openBlog: false
+    openBlog: false,
+    openUsers: false,
+    openOrders: false,
+    openSettings: false
 }">
     {{-- Dashboard --}}
     <div class="relative">
         <button @click="openDashboard = !openDashboard"
             class="flex items-center justify-between w-full px-4 py-2 rounded-lg 
                 text-gray-600 hover:text-gray-800 dark:hover:text-gray-400">
-            <span class="flex items-center font-medium gap-2">
+            <span class="flex items-center font-semibold gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor"> <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
                  Dashboard
             </span>
@@ -94,9 +95,46 @@
             </span>
         </button>
         <ul x-show="openDashboard"
-            x-transition
+            x-transition x-cloak
             class="mt-1 ml-8 space-y-1 text-gray-600">
-            <li><a href="{{ route('admin.dashboard') }}" class="block px-3 py-1 font-medium text-gray-600 hover:text-gray-600">Jelajahi Semua</a></li>
+            <li><a href="{{ route('admin.dashboard') }}" class="block px-3 py-1 font-semibold text-gray-600 hover:text-gray-800">Jelajahi Semua</a></li>
+        </ul>
+    </div>
+    <div class="relative">
+        <button @click="openOrders = !openOrders"
+            class="flex items-center justify-between w-full px-4 py-2 rounded-lg 
+                text-gray-600 hover:text-gray-800 dark:hover:text-gray-400">
+            <span class="flex items-center font-semibold gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor"> <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path></svg>
+                 Pesanan
+            </span>
+            <span :class="openOrders ? 'rotate-180' : ''" class="transition-transform">
+                <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path> </svg>
+            </span>
+        </button>
+        <ul x-show="openOrders"
+            x-transition x-cloak
+            class="mt-1 ml-8 space-y-1 text-gray-600">
+            <li><a href="{{ route('admin.orders') }}" class="block px-3 py-1 font-semibold text-gray-600 hover:text-gray-800">Jelajahi Semua</a></li>
+        </ul>
+    </div>
+    {{-- Pengguna --}}
+    <div class="relative">
+        <button @click="openUsers = !openUsers"
+            class="flex items-center justify-between w-full px-4 py-2 rounded-lg 
+                text-gray-600 hover:text-gray-800 dark:hover:text-gray-400">
+            <span class="flex items-center font-semibold gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor"> <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                 Pengguna
+            </span>
+            <span :class="openUsers ? 'rotate-180' : ''" class="transition-transform">
+                <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path> </svg>
+            </span>
+        </button>
+        <ul x-show="openUsers"
+            x-transition x-cloak
+            class="mt-1 ml-8 space-y-1 text-gray-600">
+            <li><a href="{{ route('admin.users') }}" class="block px-3 py-1 font-semibold text-gray-400 hover:text-gray-800 transition-all duration-300">Jelajahi Semua</a></li>
         </ul>
     </div>
 
@@ -105,9 +143,9 @@
         <button @click="openProducts = !openProducts"
             class="flex items-center justify-between w-full px-4 py-2 rounded-lg 
                 text-gray-600 hover:text-gray-800 dark:hover:text-gray-400">
-            <span class="flex items-center font-medium gap-2">
+            <span class="flex items-center font-semibold gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor"> <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z"></path></svg>
-                 Produk
+                 Products
             </span>
             <span :class="openProducts ? 'rotate-180' : ''" class="transition-transform">
                 <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"> <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path> </svg>
@@ -115,10 +153,10 @@
         </button>
 
         <ul x-show="openProducts"
-            x-transition
+            x-transition x-cloak
             class="mt-1 ml-8 space-y-1 text-gray-600">
             <li>
-                <a href="{{ route('admin.products.index') }}" class="block px-3 py-1 font-medium text-gray-600 hover:text-gray-600">
+                <a href="{{ route('admin.products.index') }}" class="block px-3 py-1 font-semibold text-gray-400 hover:text-gray-800 transition-all duration-300">
                     Jelajahi Semua
                 </a>
             </li>
@@ -130,7 +168,7 @@
     <div class="relative">
         <button @click="openBlog = !openBlog"
             class="flex items-center justify-between w-full px-4 py-2 rounded-lg text-gray-600 hover:text-gray-800 dark:hover:text-gray-400">
-            <span class="flex items-center font-medium gap-2">
+            <span class="flex items-center font-semibold gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor"> <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1H8a3 3 0 00-3 3v1.5a1.5 1.5 0 01-3 0V6z" clip-rule="evenodd"></path> <path d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z"></path></svg>
                  Blog
             </span>
@@ -140,11 +178,16 @@
         </button>
 
         <ul x-show="openBlog"
-            x-transition
+            x-transition x-cloak
             class="mt-1 ml-8 space-y-1 text-gray-600">
             <li>
-                <a href="/blog" class="block px-3 py-1 font-medium text-gray-600 hover:text-gray-600">
+                <a href="{{ route('admin.blogs') }}" class="block px-3 py-1 font-semibold text-gray-400 hover:text-gray-800 transition-all duration-300">
                     Jelajahi Semua
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.blogs.create') }}" class="block px-3 py-1 font-semibold text-gray-400 hover:text-gray-800 transition-all duration-300">
+                    Buat Artikel
                 </a>
             </li>
             
@@ -182,6 +225,5 @@
             overlay.classList.add('hidden');
         });
     </script>
-
 </body>
 </html>

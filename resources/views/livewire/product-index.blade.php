@@ -1,21 +1,43 @@
+
 <main class="h-full w-full md:ltr:ml-64 md:ltr:mr-64">
-    <div class="max-w-full px-6 py-12 lg:px-10">
+    
+    <div class="max-w-full px-6 py-12 lg:px-20">
 
         {{-- Notifikasi popup --}}
-        @if (session()->has('message'))
-            <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)" x-transition
-                class="fixed right-1/2 top-5 z-50 translate-x-1/2 transform rounded border border-green-500 bg-green-100 px-4 py-2 text-green-700 shadow-lg">
-                {{ session('message') }}
-            </div>
-        @endif
-
-        <h2 class="mb-4 text-2xl font-semibold">Manajemen Produk</h2>
-
-        <button wire:click="openModal()" class="mb-4 rounded bg-blue-600 px-4 py-2 text-white">
-            Tambah Produk
+        @if (session('message'))
+    <div 
+        x-data="{ show: true }"
+        x-init="setTimeout(() => show = false, 5000)"
+        x-show="show"
+        x-transition.opacity.duration.500ms
+        class="fixed right-1/2 top-5 z-50 translate-x-1/2 transform rounded border border-green-500 bg-green-100 px-4 py-2 text-green-700 shadow-lg"
+    >
+        {{ session('message') }}
+    </div>
+@endif
+        <div class="mt-20 px-4 md:px-3 py-4 md:py-5 bg-white border !border-b-0 border-gray-200 rounded-t-lg">
+            <div class="sm:flex items-center justify-between">
+                    <p class="text-sm font-bold text-gray-800">Product</p>
+                {{-- Live Search Input --}}
+                    <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari Produk..."
+                        class="focus:border-primary-500 w-full rounded border-gray-300 p-2 sm:w-1/2">
+                    <div class="space-x-3 flex">
+                    {{-- Sorting Dropdown --}}
+                    <select wire:model.live.debounce.300ms="shortBy"
+                        class="focus:border-primary-500 w-full rounded border-gray-300 p-2 sm:w-44">
+                        <option value="latest">Terbaru</option>
+                        <option value="oldest">Terlama</option>
+                        <option value="expensive">Termahal</option>
+                        <option value="quantity">Terbanyak</option>
+                    </select>
+                <button wire:click="openModal()" class="flex items-center rounded bg-blue-600 px-4 py-2 text-white">
+            Buat Product
         </button>
+                </div>
 
-        <div class="mx-auto max-w-7xl rounded-lg bg-white p-6 shadow-md sm:px-6 lg:px-8">
+            </div>
+        </div>
+        <div class="w-full border-collapse overflow-hidden border !border-t-0 border-gray-200 shadow-sm">
             {{-- Modal Tambah/Edit --}}
             <div x-data="{ open: @entangle('showModal') }" x-show="open" x-cloak
                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -40,6 +62,9 @@
                                 <div class="flex flex-col items-center justify-center pb-6 pt-5">
                                     <svg class="mb-1 h-8 w-8 text-gray-400" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                                    </svg>
                                         <p class="text-sm text-gray-500">Klik untuk pilih gambar</p>
                                         <p class="text-xs text-gray-400">JPEG, JPG, PNG, WEBP | Max 2MB</p>
                                 </div>
@@ -132,22 +157,11 @@
                 </div>
             </div>
 
-            {{-- Live Search Input --}}
-            <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari Produk..."
-                class="focus:border-primary-500 w-full rounded border-gray-300 p-2 sm:w-1/2">
-
-            {{-- Sorting Dropdown --}}
-            <select wire:model.live.debounce.300ms="shortBy"
-                class="focus:border-primary-500 w-full rounded border-gray-300 p-2 sm:w-44">
-                <option value="latest">Terbaru</option>
-                <option value="oldest">Terlama</option>
-                <option value="expensive">Termahal</option>
-                <option value="quantity">Terbanyak</option>
-            </select>
+            
             {{-- Daftar Produk --}}
-            <table class="mt-4 w-full overflow-hidden rounded-lg border border-gray-300 shadow-sm">
+            <table class="w-full overflow-hidden shadow-sm">
                 <thead>
-                    <tr class="bg-gray-200">
+                    <tr class="bg-gray-200 h-16">
                         <th class="p-2">Gambar</th>
                         <th class="p-2">Nama</th>
                         <th class="p-2">Harga</th>
@@ -190,7 +204,7 @@
                                     </button>
 
                                     <!-- Dropdown -->
-                                    <div x-show="open" x-ref="dropdown" @click.away="open = false" x-transition
+                                    <div x-show="open" x-ref="dropdown" @click.away="open = false" x-transition x-cloak
                                         :class="position === 'top'
                                             ?
                                             'bottom-full mb-2' :
@@ -219,7 +233,8 @@
                     @endforeach
                 </tbody>
             </table>
-
+        </div>
+        <div class="px-4 md:px-3 py-4 md:py-5 bg-white border !border-t-0 border-gray-200 rounded-b-lg ">
             <div class="mt-2">
                 {{ $products->links() }}
             </div>
