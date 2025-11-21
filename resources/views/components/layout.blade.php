@@ -9,7 +9,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-    <link rel="icon" type="image/png" href="https://unweeded-mabel-unobstruently.ngrok-free.dev/img/seduhin_logo.ico">
+    <link rel="icon" type="image/png" href="/img/seduhin_logo.ico">
 
 
     <title>{{ $title }}</title>

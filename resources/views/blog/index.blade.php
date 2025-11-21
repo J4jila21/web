@@ -17,20 +17,20 @@
                     loading="lazy" style="border-radius: 10px; object-fit: cover;">
             </div>  
         </main>
+        {{-- Breadcrumb --}}
+        <nav class="mt-4 px-3 md:px-5" aria-label="Breadcrumb">
+            <ol class="flex flex-wrap gap-1 text-sm text-gray-400">
+                <li>
+                    <a href="/" class="font-semibold transition-colors hover:text-black" aria-current="page">Home</a>
+                </li>
+                <li class="[&>svg]:size-3.5">-</li>
+                <li>
+                    <a href="/about" class="font-semibold transition-colors hover:text-black">about</a>
+                </li>
+            </ol>
+        </nav>
     </x-slot:header>
 
-    {{-- Breadcrumb --}}
-    <nav class="mt-4 px-3 md:px-5" aria-label="Breadcrumb">
-        <ol class="flex flex-wrap gap-1 text-sm text-gray-400">
-            <li>
-                <a href="/" class="font-semibold transition-colors hover:text-black" aria-current="page">Home</a>
-            </li>
-            <li class="[&>svg]:size-3.5">-</li>
-            <li>
-                <a href="/about" class="font-semibold transition-colors hover:text-black">about</a>
-            </li>
-        </ol>
-    </nav>
 
     {{-- Search --}}
     <div class="mx-auto max-w-screen-xl px-4 py-6 lg:px-6">

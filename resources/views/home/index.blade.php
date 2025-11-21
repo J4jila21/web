@@ -67,17 +67,14 @@
                             </div>
 
                             {{-- Harga & Tombol --}}
-                            <div class="mt-auto">
-                                <div class="mb-3 flex items-center justify-between">
-                                    <span class="text-lg font-bold text-gray-900">
-                                        Rp {{ number_format($item->price, 0, ',', '.') }}
-                                    </span>
-                                </div>
-                                <button
-                                    class="bg-primary-600 w-full rounded-full py-2 font-semibold text-white transition hover:bg-blue-700">
-                                    Tambah ke Keranjang
-                                </button>
-                            </div>
+                            <div class="mt-2 flex flex-col items-stretch justify-between gap-1.5 rounded-md py-1 pl-1 pr-1 md:flex-row md:items-center md:gap-2 md:rounded-lg md:bg-neutral-100 md:py-1.5 md:pl-4 md:pr-1.5">
+                                <span>Rp {{ number_format($item->price, 0, ',', '.') }}</span>
+                    <button
+                        @click="openModal(product)"
+                        class="bg-primary-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-primary-700">
+                        Detail
+                    </button>
+                </div>
                         </div>
                     </div>
                 @empty

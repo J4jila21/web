@@ -10,18 +10,18 @@
                 <h1 class="md:text-left text-3xl font-bold md:text-6xl">Tentang Kami</h1>
             </div> 
         </main>
+        <nav class="mt-4 px-3 md:px-5" aria-label="Breadcrumb">
+            <ol class="flex flex-wrap gap-1 text-sm text-gray-400">
+                <li>
+                    <a href="/" class="font-semibold transition-colors hover:text-black" aria-current="page">Home</a>
+                </li>
+                <li class="[&>svg]:size-3.5">-</li> 
+                <li>
+                    <a href="/about" class="font-semibold transition-colors hover:text-black">About</a>
+                </li>
+            </ol>
+        </nav>
     </x-slot:header>
-    <nav class="mt-4 px-3 md:px-5" aria-label="Breadcrumb">
-        <ol class="flex flex-wrap gap-1 text-sm text-gray-400">
-            <li>
-                <a href="/" class="font-semibold transition-colors hover:text-black" aria-current="page">Home</a>
-            </li>
-            <li class="[&>svg]:size-3.5">-</li> 
-            <li>
-                <a href="/about" class="font-semibold transition-colors hover:text-black">About</a>
-            </li>
-        </ol>
-    </nav>
     <div class="w-11/12 mx-auto md:w-7/12 mb-5 my-10">
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, consequatur. Doloribus, quibusdam. Molestias molestiae, accusantium. Doloribus, quibusdam.</p>
     </div>

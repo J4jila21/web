@@ -14,18 +14,18 @@
                 </p>
             </div>
         </main>
+        <nav class="p-3 md:px-20 border-b border-gray-300" aria-label="Breadcrumb">
+            <ol class="flex flex-wrap gap-1 text-sm text-gray-400">
+                <li>
+                    <a href="/" class="font-semibold transition-colors hover:text-black" aria-current="page">Home</a>
+                </li>
+                <li class="[&>svg]:size-3.5">-</li>
+                <li>
+                    <a href="/product"  class="font-semibold transition-colors hover:text-black">Products</a>
+                </li>
+            </ol>
+        </nav>
     </x-slot:header>
-    <nav class="p-3 md:px-20" aria-label="Breadcrumb">
-        <ol class="flex flex-wrap gap-1 text-sm text-gray-400">
-            <li>
-                <a href="/" class="font-semibold transition-colors hover:text-black" aria-current="page">Home</a>
-            </li>
-            <li class="[&>svg]:size-3.5">-</li>
-            <li>
-                <a href="/product" class="font-semibold transition-colors hover:text-black">Products</a>
-            </li>
-        </ol>
-    </nav>
     {{-- Search Bar --}}
     <div class="mx-auto mb-20 max-w-3xl px-6">
         <form action="{{ route('product.index') }}" method="GET" class="relative">
@@ -65,9 +65,9 @@
                          class="h-full w-full object-cover rounded-t-lg">
                 </div>
 
-                <div class="absolute left-3 top-3 rounded-full bg-blue-600 px-3 py-1 text-xs text-white shadow">
+                {{-- <div class="absolute left-3 top-3 rounded-full bg-blue-600 px-3 py-1 text-xs text-white shadow">
                     Stok: <span x-text="product.quantity"></span>
-                </div>
+                </div> --}}
             </div>
 
             <!-- Detail -->
