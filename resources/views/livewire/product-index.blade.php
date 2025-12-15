@@ -162,8 +162,7 @@
             <table class="w-full overflow-hidden shadow-sm">
                 <thead>
                     <tr class="bg-gray-200 h-16">
-                        <th class="p-2">Gambar</th>
-                        <th class="p-2">Nama</th>
+                        <th class="p-5 text-start">Products</th>
                         <th class="p-2">Harga</th>
                         <th class="p-2">Quantity</th>
                         <th class="p-2">Aksi</th>
@@ -172,11 +171,18 @@
                 <tbody>
                     @foreach ($products as $product)
                         <tr wire:key="row-{{ $product->id }}" class="border-b hover:bg-gray-100">
-                            <td class="p-2 text-center">
+                            
+                            <td class="p-5 text-start">
+                                <div class="flex">
+                                    <div>
                                 <img src="{{ asset('storage/images/' . $product->image) }}"
                                     alt="{{ $product->name }}" class="mx-auto h-12 w-12 rounded-lg">
+                            </div>
+                                <div class="ml-3">
+                                    <span class="font-semibold">{{ $product->name }}</span>
+                                </div>
                             </td>
-                            <td class="p-2 text-center">{{ $product->name }}</td>
+                            
                             <td class="p-2 text-center">Rp {{ number_format($product->price) }}</td>
                             <td class="p-2 text-center">{{ $product->quantity }}</td>
                             <td class="p-2 text-center">

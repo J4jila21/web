@@ -192,6 +192,7 @@ Alpine.data('checkoutPage', () => ({
         @include('components.footer')
     @endunless
     @stack('scripts')
+    
     <script> 
 function productModal() {
     return {

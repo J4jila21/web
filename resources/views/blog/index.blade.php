@@ -79,6 +79,7 @@
                         <h2 class="mb-2 border-b-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                             {{ $post->title }}
                         </h2>
+                        <img src="{{ asset('storage/images/' . $post->image) }}" class="h-48 w-full rounded-lg" alt="image" loading="lazy">
                     </a>
                     <p class="mb-5 font-light text-gray-500 dark:text-gray-400">
                         {{ Str::limit($post->body, 150, '...') }}

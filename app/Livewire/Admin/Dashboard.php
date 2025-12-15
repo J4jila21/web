@@ -18,15 +18,45 @@ class Dashboard extends Component
     public $latestUsers;
     public $totalOrders;
     public $totalIncome;
+    public $chartMonths = [];
+public $chartOrders = [];
+public $chartUsers = [];
+
+    private function loadChartData()
+{
+    $months = [];
+    $orders = [];
+    $users  = [];
+
+    for ($i = 5; $i >= 0; $i--) {
+        $date = Carbon::now()->subMonths($i);
+
+        $months[] = $date->format('M Y');
+
+        $orders[] = Order::whereMonth('created_at', $date->month)
+            ->whereYear('created_at', $date->year)
+            ->count();
+
+        $users[] = User::whereMonth('created_at', $date->month)
+            ->whereYear('created_at', $date->year)
+            ->count();
+    }
+
+    $this->chartMonths = $months;
+    $this->chartOrders = $orders;
+    $this->chartUsers  = $users;
+}
 
     public function mount()
     {
         $this->applyFilter();
+        $this->loadChartData();
     }
 
     public function updatedFilter()
     {
         $this->applyFilter();
+        $this->loadChartData();
     }
 
     public function applyFilter()
@@ -57,6 +87,7 @@ class Dashboard extends Component
             ->latest()
             ->take(10)
             ->get();
+        $this->loadChartData();
     }
 
     public function render()

@@ -2,49 +2,135 @@
     <x-slot:title>{{ $title }}</x-slot:title>
     {{-- Header --}}
     <x-slot:header>
-        <main class="bg-primary-100 px-5 py-8 md:gap-10 md:p-10 md:px-20 md:py-12">
-            <div class="flex flex-col gap-3 py-20 text-center md:mx-auto md:w-9/12">
-                <div class="flex items-start justify-center gap-2">
-                    <div class="dots bg-primary-600 mt-2 h-3 w-3 rounded-full bg-opacity-50"></div>
-                    <h2 class="text-center text-3xl font-bold">Berbagai kopi terbaik kami</h1>
+        <main class="relative overflow-hidden">
+            {{-- Background gradient --}}
+            <div class="absolute inset-0 bg-gradient-to-br from-[#0B2447] via-[#19376D] to-[#576CBC]"></div>
+
+            {{-- Background image samar --}}
+            <img src="/images/coffee-hero.jpg" alt="Seduhin Coffee"
+                class="absolute inset-0 h-full w-full object-cover opacity-20">
+
+            {{-- CONTENT --}}
+            <div class="relative mx-auto max-w-7xl px-5 py-16 md:px-10 md:py-24">
+                <div class="flex flex-col md:flex-row items-start md:items-center gap-10">
+
+                    {{-- ======== LEFT TEXT ======== --}}
+                    <div class="flex-1 flex flex-col gap-4">
+                        {{-- Bullet --}}
+                        <span class="inline-flex items-center gap-2 text-sm font-semibold text-yellow-300">
+                            <span class="h-2 w-2 rounded-full bg-yellow-300"></span>
+                            Produk Kami
+                        </span>
+
+                        {{-- Title --}}
+                        <h1 class="text-3xl font-extrabold leading-tight text-white md:text-6xl">
+                            Temukan Kopi Terbaik <span class="text-yellow-300">Seduhin</span>
+                        </h1>
+
+                        {{-- Description --}}
+                        <p class="max-w-xl text-white/80">
+                            Dari espresso yang bold sampai kopi susu yang lembut — jelajahi berbagai racikan Seduhin
+                            yang dibuat dari biji kopi pilihan dan diproses dengan penuh cinta.
+                        </p>
+
+                        {{-- Buttons --}}
+                        <div class="mt-4 flex flex-wrap gap-3">
+                            <a href="#product-list"
+                                class="rounded-xl bg-yellow-400 px-4 py-2 font-semibold text-[#0B2447] hover:bg-yellow-300">
+                                Lihat Produk
+                            </a>
+                            <a href="/contact"
+                                class="rounded-xl bg-white/10 px-4 py-2 font-semibold text-white ring-1 ring-white/20 backdrop-blur hover:bg-white/15">
+                                Hubungi Kami
+                            </a>
+                        </div>
+                    </div>
+
+                    {{-- ======== RIGHT SIGNATURE BOX ======== --}}
+                    <div class="flex-1 flex justify-center md:justify-end">
+                        <div class="relative w-56 h-56 md:w-64 md:h-64">
+                            {{-- Glow --}}
+                            <div class="absolute inset-0 rounded-full bg-yellow-300/20 blur-2xl"></div>
+
+                            {{-- Card --}}
+                            <div
+                                class="relative w-full h-full rounded-[36px] bg-white/5 border border-white/20 backdrop-blur-md
+                                   flex flex-col items-center justify-center shadow-2xl text-white px-4">
+                                <span class="text-xs tracking-[0.25em] uppercase text-white/60 mb-2">
+                                    Signature
+                                </span>
+
+                                <span class="text-2xl font-semibold mb-1">
+                                    Seduhin Latte
+                                </span>
+
+                                <span class="text-sm text-white/60 mb-4">
+                                    Best seller minggu ini
+                                </span>
+
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 rounded-full bg-yellow-300/90 shadow-lg"></div>
+
+                                    <div class="space-y-1 text-left text-xs">
+                                        <p class="text-white/80">Blend Arabica pilihan</p>
+                                        <p class="text-white/50">Aroma caramel & nutty</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                <h1 class="text-3xl font-bold md:text-6xl">Temukan Kopi Terbaik Sesuai Pilihanmu</h1>
-                <p class="text-base font-light text-gray-800">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Quisquam, consequatur. Doloribus, quibusdam. Molestias molestiae, accusantium. Doloribus, quibusdam.
-                </p>
             </div>
+
+            {{-- Coffee bean accents --}}
+            <svg class="pointer-events-none absolute -bottom-16 -right-10 h-64 w-64 opacity-15 text-white"
+                viewBox="0 0 200 200" fill="currentColor" aria-hidden="true">
+                <ellipse cx="60" cy="60" rx="22" ry="14" />
+                <ellipse cx="120" cy="120" rx="22" ry="14" />
+                <ellipse cx="160" cy="40" rx="18" ry="12" />
+            </svg>
         </main>
-        <nav class="p-3 md:px-20 border-b border-gray-300" aria-label="Breadcrumb">
-            <ol class="flex flex-wrap gap-1 text-sm text-gray-400">
-                <li>
-                    <a href="/" class="font-semibold transition-colors hover:text-black" aria-current="page">Home</a>
-                </li>
-                <li class="[&>svg]:size-3.5">-</li>
-                <li>
-                    <a href="/product"  class="font-semibold transition-colors hover:text-black">Products</a>
-                </li>
-            </ol>
-        </nav>
     </x-slot:header>
     {{-- Search Bar --}}
-    <div class="mx-auto mb-20 max-w-3xl px-6">
-        <form action="{{ route('product.index') }}" method="GET" class="relative">
-            <input type="text" name="search" value="{{ request('search') }}"
-                placeholder="Cari kopi, misalnya Toraja, Arabica..."
-                class="w-full rounded-full border border-gray-300 py-3 pl-5 pr-12 text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <button type="submit"
-                class="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-blue-600 p-2 text-white transition hover:bg-blue-700">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-width="2"
-                        d="m21 21-3.5-3.5M17 10a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </button>
-        </form>
-    </div>
+    <section class="bg-[#FFF7ED] pb-20 pt-6 rounded-3xl">
+        <div class="mx-auto max-w-3xl px-6">
+            <div class="bg-white/90 border border-orange-100 rounded-2xl shadow-sm p-4 md:p-5 flex flex-col gap-3">
+                <div class="flex items-center justify-between gap-2">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.25em] text-orange-400">Cari Menu</p>
+                        <h2 class="text-sm md:text-base font-semibold text-gray-800">
+                            Mau ngopi apa hari ini?
+                        </h2>
+                    </div>
+                    <span class="hidden md:inline-flex items-center gap-1 text-xs text-gray-400">
+                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                        Fresh roasted daily
+                    </span>
+                </div>
+
+                <form action="{{ route('product.index') }}" method="GET" class="relative mt-1">
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="Cari kopi, misalnya Toraja, Arabica, Latte..."
+                        class="w-full rounded-full border border-gray-200 bg-gray-50/60 py-3 pl-4 pr-11 text-sm
+                               text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400
+                               focus:border-amber-400">
+                    <button type="submit"
+                        class="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-amber-500 p-2.5 text-white
+                               hover:bg-amber-600 transition shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-width="2"
+                                d="m21 21-3.5-3.5M17 10a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
     {{-- Produk Grid --}}
     <div x-data="productModal()">
-        <div class="mx-auto max-w-7xl px-6" x-data="filterProducts()">
+        <div class="mx-auto max-w-7xl px-6 mt-10" x-data="filterProducts()">
             <div class="flex items-center justify-end gap-5 md:mb-5">
                 <h3 class="text-gray-500">Urutkan:</h3>
         <select x-model="sort"
@@ -180,3 +266,4 @@
 
 
 </x-layout>
+ 

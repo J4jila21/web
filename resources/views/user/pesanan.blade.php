@@ -8,7 +8,7 @@
         <input type="hidden" name="status" value="all">
         <button type="submit"
             class="px-3 py-1 rounded-lg text-sm
-            {{ $status == 'all' ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-700' }}">
+            {{ $status == 'all' ? 'bg-primary-600 text-white font-bold' : 'bg-gray-200 text-gray-700' }}">
             Semua
         </button>
     </form>
@@ -18,7 +18,7 @@
         <input type="hidden" name="status" value="pending">
         <button type="submit"
             class="px-3 py-1 rounded-lg text-sm
-            {{ $status == 'pending' ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-700' }}">
+            {{ $status == 'pending' ? 'bg-primary-600 text-white font-bold' : 'bg-yellow-500 text-gray-700' }}">
             Pending
         </button>
     </form>
@@ -28,7 +28,7 @@
         <input type="hidden" name="status" value="process">
         <button type="submit"
             class="px-3 py-1 rounded-lg text-sm
-            {{ $status == 'process' ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-700' }}">
+            {{ $status == 'process' ? 'bg-primary-600 text-white font-bold' : 'bg-purple-500 text-gray-700' }}">
             Process
         </button>
     </form>
@@ -38,7 +38,7 @@
         <input type="hidden" name="status" value="done">
         <button type="submit"
             class="px-3 py-1 rounded-lg text-sm
-            {{ $status == 'done' ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-700' }}">
+            {{ $status == 'done' ? 'bg-primary-600 text-white font-bold' : 'bg-green-500 text-gray-700' }}">
             Done
         </button>
     </form>

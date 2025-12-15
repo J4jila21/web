@@ -76,6 +76,7 @@
             </div>
 
             <div class="mb-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+                
                 <div class="rounded-lg bg-white p-6 shadow-md">
                     <h3 class="text-lg font-semibold text-gray-700">Total Income</h3>
                     <p class="text-2xl font-bold text-gray-800"> Rp {{ number_format($totalIncome, 0, ',', '.') }}</p>
@@ -105,7 +106,103 @@
                     </div>
                 @endforeach
             </div>
+            <div class="mt-8 rounded-xl bg-white p-6 shadow-md" wire:ignore>
+    <div class="mb-4 flex items-center justify-between">
+        <div>
+            <h3 class="text-lg font-semibold text-gray-700">
+                Statistik Orders & Users
+            </h3>
+            <p class="text-sm text-gray-400">
+                6 bulan terakhir
+            </p>
+        </div>
+        <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-600">
+            Monthly
+        </span>
+    </div>
+
+    <div class="relative h-[320px]">
+        <canvas id="orderUserChart"></canvas>
+    </div>
+</div>
         </div>
     </div>
+    
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('livewire:navigated', initChart);
+document.addEventListener('DOMContentLoaded', initChart);
+
+let chartInstance = null;
+
+function initChart() {
+    const ctx = document.getElementById('orderUserChart');
+    if (!ctx) return;
+
+    if (chartInstance) {
+        chartInstance.destroy();
+    }
+
+    chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: @json($chartMonths),
+            datasets: [
+                {
+                    label: 'Total Orders',
+                    data: @json($chartOrders),
+                    backgroundColor: 'rgba(37, 99, 235, 0.85)',
+                    borderRadius: 8,
+                    barThickness: 26
+                },
+                {
+                    label: 'Total Users',
+                    data: @json($chartUsers),
+                    backgroundColor: 'rgba(16, 185, 129, 0.85)',
+                    borderRadius: 8,
+                    barThickness: 26
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#111827',
+                    padding: 12,
+                    cornerRadius: 8
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: '#E5E7EB'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
+}
+</script>
+
 </main>
 {{-- </x-layouts.admin> --}}
